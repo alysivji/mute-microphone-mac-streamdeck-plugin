@@ -7,15 +7,16 @@ import logging
 
 import websockets
 
+from mic_manager import get_volume
+
 logging.basicConfig(filename="example.log", level=logging.INFO)
+volume: int = 68
 
 
 async def handle_messages(websocket):
     async for message in websocket:
         msg_dict = json.loads(message)
         logging.info(msg_dict)
-        # if msg_dict["event"] == "keyUp":
-        #     os.system('osascript -e "set volume input volume 0"')
 
 
 async def connect_and_listen(registration_info: dict, port: int):
@@ -23,6 +24,14 @@ async def connect_and_listen(registration_info: dict, port: int):
     async with websockets.connect(uri) as websocket:
         await websocket.send(json.dumps(registration_info))
         await handle_messages(websocket)
+
+
+async def get_input_value():
+    while True:
+        global volume
+        volume = get_volume()
+        logging.info(f"Current volume {volume}")
+        await asyncio.sleep(1)
 
 
 def parse_args():
@@ -40,8 +49,10 @@ if __name__ == "__main__":
     logging.info("parsed arguments")
     registration_info = {"event": args.event, "uuid": args.plugin_uuid}
     logging.info(args.info)
+
     loop = asyncio.get_event_loop()
-    # schedule function to periodically get value from macbook
+    loop.run_until_complete(get_input_value())
     loop.run_until_complete(connect_and_listen(registration_info, port=args.port))
+
     loop.run_forever()
     logging.info("exited")

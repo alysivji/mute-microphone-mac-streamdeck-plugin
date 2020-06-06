@@ -10,7 +10,7 @@ def execute_apple_script(command):
 
 
 GET_INPUT_VOLUME_COMMAND = "input volume of (get volume settings)"
-input_volume = partial(execute_apple_script, command=GET_INPUT_VOLUME_COMMAND)
+get_volume = partial(execute_apple_script, command=GET_INPUT_VOLUME_COMMAND)
 
 
 def set_volume(value):
@@ -22,3 +22,5 @@ def set_volume(value):
 
 
 mute_mic = partial(set_volume, value=0)
+# if msg_dict["event"] == "keyUp":
+#     os.system('osascript -e "set volume input volume 0"')
