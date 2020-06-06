@@ -1,41 +1,17 @@
 #!/Users/alysivji/siv-dev/playground/sandbox/javascript/streamdeck/venv/bin/python
 
 import argparse
-from functools import partial
 import json
 import logging
 import os
-import subprocess
 
 import websocket
 
 logging.basicConfig(filename="example.log", level=logging.DEBUG)
 
 
-def execute_apple_script(command):
-    result = subprocess.run(["osascript", "-e", command], stdout=subprocess.PIPE)
-    output = result.stdout.decode("utf-8")
-    result = output.strip()
-    return int(result)
-
-
-GET_INPUT_VOLUME_COMMAND = "input volume of (get volume settings)"
-input_volume = partial(execute_apple_script, command=GET_INPUT_VOLUME_COMMAND)
-
-
-def set_volume(value):
-    if not (0 <= value <= 100):
-        raise ValueError
-
-    SET_VOLUME_COMMAND = f"set volume input volume {value}"
-    execute_apple_script(SET_VOLUME_COMMAND)
-
-
-mute_mic = partial(set_volume, value=0)
-
-
 def on_open(ws):
-    logging.info(f"Input Volume {input_volume()}")
+    logging.info("Input Volume")
     # register device inside of program
     ws.send(json.dumps(registration_dict))
     # get settings
