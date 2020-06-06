@@ -6,7 +6,10 @@ def execute_apple_script(command):
     result = subprocess.run(["osascript", "-e", command], stdout=subprocess.PIPE)
     output = result.stdout.decode("utf-8")
     result = output.strip()
-    return int(result)
+    try:
+        return int(result)
+    except ValueError:
+        return 0
 
 
 SET_VOLUME_COMMAND = "set volume input volume {value}"
@@ -16,7 +19,8 @@ get_input_volume = partial(execute_apple_script, command=GET_INPUT_VOLUME_COMMAN
 
 class MacMicrophoneClient:
     def __init__(self):
-        self.volume
+        self._volume = get_input_volume()
+        self._previous_volume = self._volume
 
     @property
     def volume(self):
@@ -24,11 +28,14 @@ class MacMicrophoneClient:
         return self._volume
 
     @volume.setter
-    def set_volume(self, value):
+    def volume(self, value):
         if not (0 <= value <= 100):
             raise ValueError
         execute_apple_script(SET_VOLUME_COMMAND.format(value=value))
-        self._volume = value
+        self._volume, self._previous_volume = value, self._volume
 
-    def mute(self):
-        self.volume = 0
+    def toggle_mute(self):
+        if self._volume == 0:
+            self.volume = self._previous_volume
+        else:
+            self.volume = 0
