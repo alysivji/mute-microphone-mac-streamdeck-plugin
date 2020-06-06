@@ -13,6 +13,16 @@ logging.basicConfig(filename="example.log", level=logging.INFO)
 volume: int = 68
 
 
+def parse_command_line_arguments():
+    description = "Initalize StreamDeck plugin using command-line arguments"
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument("-port", dest="port")
+    parser.add_argument("-pluginUUID", dest="plugin_uuid")
+    parser.add_argument("-registerEvent", dest="event")
+    parser.add_argument("-info", dest="info")
+    return parser.parse_args()
+
+
 async def handle_messages(websocket):
     async for message in websocket:
         msg_dict = json.loads(message)
@@ -34,18 +44,9 @@ async def get_input_value():
         await asyncio.sleep(1)
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="StreamDeck Plugin")
-    parser.add_argument("-port", dest="port")
-    parser.add_argument("-pluginUUID", dest="plugin_uuid")
-    parser.add_argument("-registerEvent", dest="event")
-    parser.add_argument("-info", dest="info")
-    return parser.parse_args()
-
-
 if __name__ == "__main__":
     logging.info("program started")
-    args = parse_args()
+    args = parse_command_line_arguments()
     logging.info("parsed arguments")
     registration_info = {"event": args.event, "uuid": args.plugin_uuid}
     logging.info(args.info)

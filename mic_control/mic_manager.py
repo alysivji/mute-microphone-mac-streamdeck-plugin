@@ -22,5 +22,3 @@ def set_volume(value):
 
 
 mute_mic = partial(set_volume, value=0)
-# if msg_dict["event"] == "keyUp":
-#     os.system('osascript -e "set volume input volume 0"')
