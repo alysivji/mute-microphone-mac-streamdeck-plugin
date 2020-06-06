@@ -1,3 +1,5 @@
+#!/Users/alysivji/siv-dev/playground/sandbox/javascript/streamdeck/venv/bin/python
+
 import argparse
 from functools import partial
 import json
@@ -33,7 +35,7 @@ mute_mic = partial(set_volume, value=0)
 
 
 def on_open(ws):
-    logging.info(f"Input Volume {input_volume}")
+    logging.info(f"Input Volume {input_volume()}")
     # register device inside of program
     ws.send(json.dumps(registration_dict))
     # get settings
