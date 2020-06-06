@@ -7,10 +7,10 @@ import logging
 
 import websockets
 
-from mic_manager import get_volume
+from microphone_client import MacMicrophoneClient
 
 logging.basicConfig(filename="example.log", level=logging.INFO)
-volume: int = 68
+microphone = MacMicrophoneClient()
 
 
 def parse_command_line_arguments():
@@ -38,10 +38,8 @@ async def connect_and_listen(registration_info: dict, port: int):
 
 async def get_input_value():
     while True:
-        global volume
-        volume = get_volume()
-        logging.info(f"Current volume {volume}")
-        await asyncio.sleep(1)
+        await asyncio.sleep(10)
+        logging.info(f"Current volume {microphone.volume}")
 
 
 if __name__ == "__main__":
@@ -52,8 +50,7 @@ if __name__ == "__main__":
     logging.info(args.info)
 
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(get_input_value())
+    asyncio.run_coroutine_threadsafe(get_input_value(), loop)
     loop.run_until_complete(connect_and_listen(registration_info, port=args.port))
 
-    loop.run_forever()
     logging.info("exited")

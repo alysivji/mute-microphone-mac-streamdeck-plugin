@@ -11,22 +11,24 @@ def execute_apple_script(command):
 
 SET_VOLUME_COMMAND = "set volume input volume {value}"
 GET_INPUT_VOLUME_COMMAND = "input volume of (get volume settings)"
-get_volume = partial(execute_apple_script, command=GET_INPUT_VOLUME_COMMAND)
+get_input_volume = partial(execute_apple_script, command=GET_INPUT_VOLUME_COMMAND)
 
 
 class MacMicrophoneClient:
     def __init__(self):
-        self.volume = self.get_input_volume()
+        self.volume
 
-    @staticmethod
-    def get_input_volume():
-        return get_volume()
+    @property
+    def volume(self):
+        self._volume = get_input_volume()
+        return self._volume
 
+    @volume.setter
     def set_volume(self, value):
         if not (0 <= value <= 100):
             raise ValueError
         execute_apple_script(SET_VOLUME_COMMAND.format(value=value))
-        self.value = value
+        self._volume = value
 
     def mute(self):
-        self.set_volume(0)
+        self.volume = 0
