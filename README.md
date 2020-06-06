@@ -17,3 +17,7 @@ to allow users to mute their microphone.
 - if we mute, we need to get the volume and store it
 - when we unmute, we need to use last volume (if volume is not 0)
 - always checking volume to update volume (every second)
+
+## Notes
+
+- `actionDefaultImage` -- icon on streamdeck

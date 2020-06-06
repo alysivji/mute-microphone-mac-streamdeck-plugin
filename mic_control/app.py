@@ -2,14 +2,13 @@
 
 import argparse
 import asyncio
-import json
 import logging
 
-import websockets
-
 from microphone_client import MacMicrophoneClient
+from streamdeck_client import connect_and_listen
 
 logging.basicConfig(filename="example.log", level=logging.INFO)
+
 microphone = MacMicrophoneClient()
 
 
@@ -23,23 +22,10 @@ def parse_command_line_arguments():
     return parser.parse_args()
 
 
-async def handle_messages(websocket):
-    async for message in websocket:
-        msg_dict = json.loads(message)
-        logging.info(msg_dict)
-
-
-async def connect_and_listen(registration_info: dict, port: int):
-    uri = f"ws://localhost:{port}"
-    async with websockets.connect(uri) as websocket:
-        await websocket.send(json.dumps(registration_info))
-        await handle_messages(websocket)
-
-
-async def get_input_value():
+async def update_input_volume_from_system():
     while True:
         await asyncio.sleep(10)
-        logging.info(f"Current volume {microphone.volume}")
+        microphone.volume
 
 
 if __name__ == "__main__":
@@ -50,7 +36,7 @@ if __name__ == "__main__":
     logging.info(args.info)
 
     loop = asyncio.get_event_loop()
-    asyncio.run_coroutine_threadsafe(get_input_value(), loop)
+    asyncio.run_coroutine_threadsafe(update_input_volume_from_system(), loop)
     loop.run_until_complete(connect_and_listen(registration_info, port=args.port))
 
     logging.info("exited")
