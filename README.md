@@ -21,3 +21,20 @@ to allow users to mute their microphone on MacOS.
 
 - [`websockets` documentation](https://websockets.readthedocs.io/en/stable/intro.html)
 - Medium: [How to create a Web Socket client](https://medium.com/better-programming/how-to-create-a-websocket-in-python-b68d65dbd549)
+
+## Todo
+
+```python
+async def send_to_server(websocket):
+    # async for message in
+    pass
+
+set_state = {
+    "event": "setState",
+    "context": "opaqueValue",  # TODO
+    "payload": {
+        "state": 0
+    }
+}
+```
+- Testing Async Code
