@@ -22,6 +22,14 @@ to allow users to mute their microphone on MacOS.
 - [`websockets` documentation](https://websockets.readthedocs.io/en/stable/intro.html)
 - Medium: [How to create a Web Socket client](https://medium.com/better-programming/how-to-create-a-websocket-in-python-b68d65dbd549)
 
+## Testing
+
+```console
+pytest
+
+python mic_control/app.py  -port 123 -info='{"application": {"language": "en", "platform": "mac", "version": "4.7.0.12981"}, "devicePixelRatio": 2, "devices": [{"id": "A123", "name": "Stream Deck", "size": {"columns": 5, "rows": 3}, "type": 0}, {"id": "D453", "name": "iPhone", "size": {"columns": 5, "rows": 3}, "type": 3}], "plugin": {"version": "1.4"}}'
+```
+
 ## Todo
 
 ```python
