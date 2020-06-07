@@ -1,7 +1,7 @@
 {
   "Actions": [
     {
-      "Icon": "actionIcon",
+      "Icon": "streamdeck_key__mute",
       "Name": "Mute Mic",
       "States": [
         {
@@ -21,7 +21,7 @@
   "CodePath": "mic_control/app.py",
   "Description": "Mute microphone on Mac.",
   "Name": "Mute Mic (Mac)",
-  "Icon": "streamdeck_key__active",
+  "Icon": "streamdeck_key__mute",
   "URL": "",
   "Version": "1.4",
   "OS": [
