@@ -17,7 +17,9 @@ class Device:
 
 
 class StreamDeckClient:
-    def __init__(self, port, event, plugin_uuid, info, mic):
+    def __init__(self, manager, port, event, plugin_uuid, info):
+        self.manager = manager
+
         data = json.loads(info)
         self.devices = {
             d["id"]: Device(id=d["id"], name=d["name"], connected=False)
@@ -26,8 +28,6 @@ class StreamDeckClient:
         self.plugin_uuid = plugin_uuid
         self.uri = f"ws://localhost:{port}"
         self.registration_info = {"event": event, "uuid": plugin_uuid}
-        self.message_queue = []
-        self.mic = mic
 
     async def connect_and_listen(self):
         async with websockets.connect(self.uri) as websocket:
@@ -52,11 +52,4 @@ class StreamDeckClient:
 
     @ee.on("keyDown")
     async def key_down_handler(self, data):
-        logging.info("we are here")
-        self.mic.toggle_mute()
-        if self.mic._volume == 0:
-            # send state 1
-            pass
-        else:
-            # send state 2
-            pass
+        await self.manager.toggle_button(data["context"])

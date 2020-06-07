@@ -21,7 +21,6 @@ def parse_command_line_arguments():
 logging.info("program started")
 args = parse_command_line_arguments()
 
-
 loop = asyncio.get_event_loop()
 manager = MuteMicrophonePluginManager(args)
 asyncio.run_coroutine_threadsafe(manager.update_input_volume_from_system(), loop)

@@ -1,5 +1,8 @@
 from functools import partial
+import logging
 import subprocess
+
+logging.basicConfig(filename="example.log", level=logging.INFO)
 
 
 def execute_apple_script(command):
@@ -18,13 +21,19 @@ get_input_volume = partial(execute_apple_script, command=GET_INPUT_VOLUME_COMMAN
 
 
 class MacMicrophoneClient:
-    def __init__(self):
-        self._volume = get_input_volume()
-        self._previous_volume = self._volume
+    def __init__(self, manager):
+        self.manager = manager
 
     @property
     def volume(self):
-        self._volume, self._previous_volume = get_input_volume(), self._volume
+        try:
+            self._volume, self._previous_volume = get_input_volume(), self._volume
+        except AttributeError:
+            self._volume = get_input_volume()
+            self._previous_volume = self._volume if self._volume != 0 else 70
+
+        logging.info(f"previous {self._previous_volume}")
+        logging.info(f"curr {self._volume}")
         return self._volume
 
     @volume.setter
