@@ -16,7 +16,7 @@ class Device(NamedTuple):
 
 class StreamDeckClient:
     def __init__(self, port, event, plugin_uuid, info, mic):
-        self.devices = {d["id"]: Device(d["id"], d["name"]) for d in info["devices"]}
+        self.devices = [Device(d["id"], d["name"]) for d in info["devices"]]
         self.plugin_uuid = plugin_uuid
         self.uri = f"ws://localhost:{port}"
         self.registration_info = {"event": event, "uuid": plugin_uuid}

@@ -30,3 +30,10 @@ class TestStreamDeckClient:
         )
 
         assert len(client.devices) == 2
+        device = client.devices[0]
+        assert device.id == "A123"
+        assert device.name == "Stream Deck"
+
+        device = client.devices[1]
+        assert device.id == "D453"
+        assert device.name == "iPhone"
