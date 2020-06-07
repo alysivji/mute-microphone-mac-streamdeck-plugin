@@ -23,20 +23,30 @@ def parse_command_line_arguments():
 logging.info("program started")
 args = parse_command_line_arguments()
 
-microphone = MacMicrophoneClient()
-streamdeck = StreamDeckClient(
-    args.port, args.event, args.plugin_uuid, args.info, microphone
-)
 
+class MuteMicrophonePluginManager:
+    def __init__(self, args):
+        self.microphone = MacMicrophoneClient()
+        self.streamdeck = StreamDeckClient(
+            port=args.port,
+            event=args.event,
+            plugin_uuid=args.plugin_uuid,
+            info=args.info,
+            mic=self.microphone,
+        )
 
-async def update_input_volume_from_system():
-    while True:
-        await asyncio.sleep(60)
-        microphone.volume
+    async def connect(self):
+        await self.streamdeck.connect_and_listen()
+
+    async def update_input_volume_from_system(self):
+        while True:
+            await asyncio.sleep(60)
+            self.microphone.volume
 
 
 loop = asyncio.get_event_loop()
-asyncio.run_coroutine_threadsafe(update_input_volume_from_system(), loop)
-loop.run_until_complete(streamdeck.connect_and_listen())
+manager = MuteMicrophonePluginManager(args)
+asyncio.run_coroutine_threadsafe(manager.update_input_volume_from_system(), loop)
+loop.run_until_complete(manager.connect())
 
 logging.info("exited")
