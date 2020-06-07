@@ -22,7 +22,6 @@ class StreamDeckClient:
         self.registration_info = {"event": event, "uuid": plugin_uuid}
         self.message_queue = []
         self.mic = mic
-        import pdb; pdb.set_trace()
         logging.info(self.devices)
 
     async def connect_and_listen(self):
