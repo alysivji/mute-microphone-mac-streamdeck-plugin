@@ -6,12 +6,8 @@ to allow users to mute their microphone on MacOS.
 ## Design
 
 - connect to Elgato Stream Deck software using Websockets
-- plugin uses asyncio's event loop to coordinate communication with Stream Deck software and manage system sound
-
-### Future Design
-
-- pass in manager state into classes
-- write events to queue so we know what to handle
+- we use the asyncio event loop to manage running workloads for communicating with StreamDeck software and managing system sound
+- Plugin manager handles the coordination
 
 ## Installation Instructions
 
@@ -37,5 +33,5 @@ python mic_control/app.py  -port 123 -info='{"application": {"language": "en", "
 
 ## Todo
 
-- what if mic is muted when we connect, how to figure that out?
 - https://github.com/aaugustin/websockets
+- what happens when client deletes our icon?

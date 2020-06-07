@@ -14,6 +14,7 @@ class Device:
     id: str
     name: str
     connected: bool
+    context: set
 
 
 class StreamDeckClient:
@@ -22,7 +23,7 @@ class StreamDeckClient:
 
         data = json.loads(info)
         self.devices = {
-            d["id"]: Device(id=d["id"], name=d["name"], connected=False)
+            d["id"]: Device(id=d["id"], name=d["name"], connected=False, context=set())
             for d in data["devices"]
         }
         self.plugin_uuid = plugin_uuid
@@ -38,6 +39,19 @@ class StreamDeckClient:
     async def send_to_streamdeck(self, payload):
         await self.websocket.send(json.dumps(payload))
 
+    async def update_button_state(self, state):
+        state_config = {
+            "event": "setState",
+            "payload": {
+                "state": state
+            }
+        }
+        for key, device in self.devices.items():
+            if device.connected:
+                for app_instance in device.context:
+                    state_config["context"] = app_instance
+                    await self.send_to_streamdeck(state_config)
+
     async def start_incoming_messages_listener(self):
         async for message in self.websocket:
             data = json.loads(message)
@@ -52,4 +66,13 @@ class StreamDeckClient:
 
     @ee.on("keyDown")
     async def key_down_handler(self, data):
-        await self.manager.toggle_button(data["context"])
+        await self.manager.toggle_button()
+
+    @ee.on("willAppear")
+    async def will_appear_handler(self, data):
+        device_id = data["device"]
+        context = data["context"]
+
+        device = self.devices[device_id]
+        device.context.add(context)
+        await self.manager._update_button()

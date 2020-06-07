@@ -24,21 +24,15 @@ class MuteMicrophonePluginManager:
     async def update_input_volume_from_system(self):
         while True:
             self.microphone.volume
+            await self._update_button()
             await asyncio.sleep(60)
 
-    async def toggle_button(self, context):
+    async def toggle_button(self):
         self.microphone.toggle_mute()
-        await self._check(context)
+        await self._update_button()
 
-    async def _check(self, context):
-        set_state = {
-            "event": "setState",
-            "context": context,
-            "payload": {}
-        }
+    async def _update_button(self):
         if self.microphone._volume == 0:
-            set_state["payload"]["state"] = 1
-            await self.streamdeck.send_to_streamdeck(set_state)
+            await self.streamdeck.update_button_state(state=1)
         else:
-            set_state["payload"]["state"] = 0
-            await self.streamdeck.send_to_streamdeck(set_state)
+            await self.streamdeck.update_button_state(state=0)
