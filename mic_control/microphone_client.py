@@ -24,7 +24,7 @@ class MacMicrophoneClient:
 
     @property
     def volume(self):
-        self._volume = get_input_volume()
+        self._volume, self._previous_volume = get_input_volume(), self._volume
         return self._volume
 
     @volume.setter

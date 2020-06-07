@@ -5,13 +5,14 @@
       "Name": "Mute Mic",
       "States": [
         {
-          "Image": "actionDefaultImage",
-          "TitleAlignment": "middle",
-          "FontSize": "16"
+          "Image": "streamdeck_key__active"
+        },
+        {
+          "Image": "streamdeck_key__mute"
         }
       ],
       "SupportedInMultiActions": false,
-      "Tooltip": "How many times did you get pwned today? Keep track with this counter.",
+      "Tooltip": "Mute your mic on Mac OS.",
       "UUID": "com.alysivji.mutemic-mac.action"
     }
   ],
@@ -20,7 +21,7 @@
   "CodePath": "mic_control/app.py",
   "Description": "Mute microphone on Mac.",
   "Name": "Mute Mic (Mac)",
-  "Icon": "pluginIcon",
+  "Icon": "streamdeck_key__active",
   "URL": "",
   "Version": "1.4",
   "OS": [

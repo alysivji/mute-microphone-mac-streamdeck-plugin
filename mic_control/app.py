@@ -28,7 +28,7 @@ def parse_command_line_arguments():
 
 async def update_input_volume_from_system():
     while True:
-        await asyncio.sleep(10)
+        await asyncio.sleep(60)
         microphone.volume
 
 
