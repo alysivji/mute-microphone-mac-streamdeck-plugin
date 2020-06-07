@@ -18,7 +18,7 @@
   ],
   "SDKVersion": 2,
   "Author": "Aly Sivji",
-  "CodePath": "mic_control/app.py",
+  "CodePath": "mic_control/main.py",
   "Description": "Mute microphone on Mac.",
   "Name": "Mute Mic (Mac)",
   "Icon": "assets/streamdeck_key__mute",
