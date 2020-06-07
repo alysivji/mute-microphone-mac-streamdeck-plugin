@@ -1,23 +1,23 @@
 # Mute Microphone Stream Deck Plugin
 
 [Stream Deck](https://www.elgato.com/en/gaming/stream-deck) plugin
-to allow users to mute their microphone.
+to allow users to mute their microphone on MacOS.
 
-## Todo
+## Design
 
-- move to [websockets](https://github.com/aaugustin/websockets)
-  - with `asyncio`, we can have a job that gets volume and updates what we need to do
-  - https://websockets.readthedocs.io/en/stable/intro.html
-  - https://medium.com/better-programming/how-to-create-a-websocket-in-python-b68d65dbd549
-- https://www.youtube.com/watch?v=vOa2r1ybiuk
+- connect to Elgato Stream Deck software using Websockets
+- plugin uses asyncio's event loop to coordinate communication with Stream Deck software and manage system sound
 
-## Use Cases
+## Installation Instructions
 
-- States: `muted`, `not_muted`
-- if we mute, we need to get the volume and store it
-- when we unmute, we need to use last volume (if volume is not 0)
-- always checking volume to update volume (every second)
+1. Download repo
+1. Create a virtual environment with Python 3.7+
+1. `pip install -r requirements.txt`
+1. Update [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)) at top of `mic_control/app.py` with the Python Path from your virtual evironment above
+1. Link folder `ln -s [path-to-file] /Users/[username]/Library/Application Support/com.elgato.StreamDeck/Plugins/com.alysivji.mutemic-mac.sdPlugin`
+1. Restart StreamDeck software
 
-## Notes
+## Resources
 
-- `actionDefaultImage` -- icon on streamdeck
+- [`websockets` documentation](https://websockets.readthedocs.io/en/stable/intro.html)
+- Medium: [How to create a Web Socket client](https://medium.com/better-programming/how-to-create-a-websocket-in-python-b68d65dbd549)
