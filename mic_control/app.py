@@ -49,18 +49,18 @@ class StreamDeckClient:
         async for message in websocket:
             msg_dict = json.loads(message)
             logging.info(msg_dict)
-            ee.emit(msg_dict["event"])
+            ee.emit(msg_dict["event"], self)
 
-
-@ee.on('keyDown')
-async def key_down_handler():
-    microphone.toggle_mute()
-    if microphone._volume == 0:
-        # send state 1
-        pass
-    else:
-        # send state 2
-        pass
+    @ee.on('keyDown')
+    async def key_down_handler(self):
+        logging.info("we are here")
+        microphone.toggle_mute()
+        if microphone._volume == 0:
+            # send state 1
+            pass
+        else:
+            # send state 2
+            pass
 
 
 if __name__ == "__main__":
