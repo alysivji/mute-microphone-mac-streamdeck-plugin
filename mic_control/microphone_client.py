@@ -26,14 +26,13 @@ class MacMicrophoneClient:
 
     @property
     def volume(self):
+        self._volume = get_input_volume()
         try:
-            self._volume, self._previous_volume = get_input_volume(), self._volume
+            if self._volume == self._previous_volume == 0:
+                self._previous_volume = 70
         except AttributeError:
-            self._volume = get_input_volume()
-            self._previous_volume = self._volume if self._volume != 0 else 70
-
-        logging.info(f"previous {self._previous_volume}")
-        logging.info(f"curr {self._volume}")
+            self._previous_volume = 70
+            pass
         return self._volume
 
     @volume.setter

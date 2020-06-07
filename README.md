@@ -35,3 +35,4 @@ python mic_control/app.py  -port 123 -info='{"application": {"language": "en", "
 
 - https://github.com/aaugustin/websockets
 - what happens when client deletes our icon?
+- need to add a state machine around sound control, two states: `ON` and `OFF`
