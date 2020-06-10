@@ -23,7 +23,8 @@ args = parse_command_line_arguments()
 
 loop = asyncio.get_event_loop()
 manager = MuteMicrophonePluginManager(args)
-asyncio.run_coroutine_threadsafe(manager.update_input_volume_from_system(), loop)
-loop.run_until_complete(manager.connect())
+loop.create_task(manager.update_input_volume_from_system())
+loop.create_task(manager.connect())
+loop.run_forever()
 
 logging.info("exited")

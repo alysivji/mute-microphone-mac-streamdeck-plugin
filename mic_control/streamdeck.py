@@ -39,19 +39,6 @@ class StreamDeckClient:
     async def send_to_streamdeck(self, payload):
         await self.websocket.send(json.dumps(payload))
 
-    async def update_button_state(self, state):
-        state_config = {
-            "event": "setState",
-            "payload": {
-                "state": state
-            }
-        }
-        for key, device in self.devices.items():
-            if device.connected:
-                for app_instance in device.context:
-                    state_config["context"] = app_instance
-                    await self.send_to_streamdeck(state_config)
-
     async def start_incoming_messages_listener(self):
         async for message in self.websocket:
             data = json.loads(message)
@@ -76,3 +63,16 @@ class StreamDeckClient:
         device = self.devices[device_id]
         device.context.add(context)
         await self.manager._update_button()
+
+    async def update_button_state(self, state):
+        state_config = {
+            "event": "setState",
+            "payload": {
+                "state": state
+            }
+        }
+        for key, device in self.devices.items():
+            if device.connected:
+                for app_instance in device.context:
+                    state_config["context"] = app_instance
+                    await self.send_to_streamdeck(state_config)
